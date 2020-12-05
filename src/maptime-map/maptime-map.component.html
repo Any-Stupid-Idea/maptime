@@ -1,0 +1,44 @@
+<h3>{{ track.subjectName }}'s Maptime Map</h3>
+
+<!-- this creates a google map on the page with the first given lat/lng from -->
+<!-- the component as the initial center of the map: -->
+<agm-map [latitude]="track.locationEvents[track.locationEvents.length - 1].lat"
+         [longitude]="track.locationEvents[track.locationEvents.length - 1].lng"
+         (mapClick)="onChoseLocation($event)"
+         [mapTypeId]="'hybrid'">
+  <ng-container *ngFor="let locEvent of track.locationEvents; let i = index; last as isLast">
+    <agm-marker [latitude]="locEvent.lat"
+                [longitude]="locEvent.lng"
+                [iconUrl]="isLast ? latestLocEventIcon : ''"
+                [label]="{color: 'yellow', text: (i + 1).toString()}">
+      <agm-snazzy-info-window *ngIf="showBubbleMarker"
+                              [maxWidth]="300"
+                              [shadow]="true"
+                              padding="12px"
+                              backgroundColor="LemonChiffon"
+                              fontSize="10px"
+                              fontColor="MidnightBlue"
+                              wrapperClass="customClass"
+                              [showCloseButton]="true"
+                              [isOpen]="false"
+                              [panOnOpen]="true"
+                              [closeWhenOthersOpen]="true"
+                              [closeOnMapClick]="true">
+        <ng-template>
+          <h4>{{ track.subjectName }} was here</h4>
+          <p>
+            {{ locEvent.createdAt.toLocaleString() }}<br><hr>
+            Latitude: {{ locEvent.lat.toString() }}<br>
+            Longitude: {{ locEvent.lng.toString() }}
+          </p>
+        </ng-template>
+      </agm-snazzy-info-window>
+    </agm-marker>
+  </ng-container>
+
+  <agm-polyline [visible]="true" [strokeWeight]="3" [strokeColor]="'Aqua'">
+    <agm-polyline-point *ngFor="let locEvent of track.locationEvents; let i = index;" [latitude]="locEvent.lat" [longitude]="locEvent.lng">
+    </agm-polyline-point>
+  </agm-polyline>
+
+</agm-map>

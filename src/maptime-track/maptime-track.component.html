@@ -1,0 +1,19 @@
+<h3>{{ track.subjectName }}'s Track Details</h3>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Latitude</th>
+      <th scope="col">Longitude</th>
+      <th scope="col">Created</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let locEvent of track.locationEvents; let i = index; last as isLast">
+      <th scope="row">{{ i + 1 }}</th>
+      <td>{{ (locEvent.lat | number:'.1-5').toString() }}</td>
+      <td>{{ (locEvent.lng | number:'.1-5').toString() }}</td>
+      <td>{{ locEvent.createdAt.toLocaleString() }}</td>
+    </tr>
+  </tbody>
+</table>
